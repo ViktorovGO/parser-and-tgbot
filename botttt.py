@@ -6,6 +6,7 @@ from random import randrange
 import time
 import json
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.dispatcher.filters import Text
 import pip
 import asyncio
 pip.main(['install', 'aiogram'])
@@ -73,10 +74,14 @@ async def send_welcome(message: types.Message):
     user_full_name = message.from_user.full_name
     # Так как код работает асинхронно, то обязательно пишем await.
     await message.reply(f"Привет {user_full_name}!\nЯ новостной бот по дота 2, буду скидывать вам новости по мере их появления.")
+    start_buttons = ["Получать свежие новости", "Последние 5 новостей"]
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
+    keyboard.add(*start_buttons)
+    await message.answer("Лента новостей", reply_markup = keyboard )
 
 
 # Явно указываем в декораторе, на какую команду реагируем.
-@dp.message_handler(commands=['start_news'])
+@dp.message_handler(Text(equals = ["Получать свежие новости"]))
 async def get_news(message: types.Message):
     get_info('https://dota2.ru/news/')
     global user_id
@@ -89,7 +94,7 @@ async def get_news(message: types.Message):
     # Thread(target = if_new_state, args = (new_state, prev_art_date,)).start()
 
 
-@dp.message_handler(commands=['last_5_news'])
+@dp.message_handler(Text(equals = ["Последние 5 новостей"]))
 async def last_5_news(message: types.Message):
     get_info('https://dota2.ru/news/')
     user_id = message.from_user.id
