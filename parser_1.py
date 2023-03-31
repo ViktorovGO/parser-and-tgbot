@@ -21,7 +21,7 @@ def get_info(url=''):
     
     articles_urls_list = []
     d = []
-    for page in range(1, 50):
+    for page in range(1, 2):
         response = s.get(f'https://dota2.ru/news/?page={page}', headers = headers)
         soup = BeautifulSoup(response.text, 'lxml')
         articles_urls = soup.find_all('a', class_='index__news-link game-icon js-game-icon')
@@ -30,7 +30,7 @@ def get_info(url=''):
         except AttributeError:
             zakrep = ""
         
-        for i, art_url in enumerate(articles_urls[:2]):
+        for i, art_url in enumerate(articles_urls):
             art_url = 'https://dota2.ru'+art_url.get('href')
             
             # articles_urls_list.append(art_url)

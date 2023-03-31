@@ -28,11 +28,11 @@ async def send_news(user_id):
         zakrep_published = True
         prev_zakrep_date = article[0]['date_pub']
 
-    await bot.send_message(user_id, '_Новость от {}_'.format(article[0]['date_pub']), parse_mode='Markdown')
+    out_to_user = ''
+    out_to_user=f"_Новость от {article[0]['date_pub']}_\n\n*{article[0]['title']}\n\n*{article[0]['text']}{'-'*25}\n\n"
+    
     await bot.send_photo(user_id, article[0]['img_art'])
-    # await bot.send_message(user_id, 'Ссылка на новость:{}'.format(article[0]['original_url']))
-    await bot.send_message(user_id, '*{}*'.format(article[0]['title']), parse_mode='Markdown')
-    await bot.send_message(user_id, article[0]['text'])
+    await bot.send_message(user_id, out_to_user, parse_mode='Markdown')  
 
     prev_art_date = article[0]['date_pub']
 
@@ -57,11 +57,11 @@ async def send_news(user_id):
             new_state = True
 
         if new_state:
-            await bot.send_message(user_id, '_Новость от {}_'.format(article[0]['date_pub']), parse_mode='Markdown')
+            out_to_user = ''
+            out_to_user=f"_Новость от {article[0]['date_pub']}_\n\n*{article[0]['title']}\n\n*{article[0]['text']}{'-'*25}\n\n"
+            
             await bot.send_photo(user_id, article[0]['img_art'])
-            # await bot.send_message(user_id, 'Ссылка на новость:{}'.format(article[0]['original_url']))
-            await bot.send_message(user_id, '*{}*'.format(article[0]['title']), parse_mode='Markdown')
-            await bot.send_message(user_id, article[0]['text'])
+            await bot.send_message(user_id, out_to_user, parse_mode='Markdown')  
             prev_art_date = article[0]['date_pub']
             new_state = False
 
@@ -87,6 +87,21 @@ async def get_news(message: types.Message):
 
     # asyncio.run(if_new_state(new_state, prev_art_date))
     # Thread(target = if_new_state, args = (new_state, prev_art_date,)).start()
+
+
+@dp.message_handler(commands=['last_5_news'])
+async def last_5_news(message: types.Message):
+    get_info('https://dota2.ru/news/')
+    user_id = message.from_user.id
+    await bot.send_message(user_id, "Вот последние 5 новостей \U0001F60E")
+    with open('artile_info.json', 'r') as f:
+            article = json.load(f)
+    for i in range(0,5):
+        out_to_user = ''
+        out_to_user=f"_Новость от {article[i]['date_pub']}_\n\n*{article[i]['title']}\n\n*{article[i]['text']}{'-'*25}\n\n"
+        
+        await bot.send_photo(user_id, article[i]['img_art'])
+        await bot.send_message(user_id, out_to_user, parse_mode='Markdown')    
 
 
 if __name__ == '__main__':

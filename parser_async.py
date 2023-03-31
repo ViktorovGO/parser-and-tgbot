@@ -3,6 +3,7 @@ import requests
 import asyncio
 import aiohttp
 import time
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 import json
@@ -47,7 +48,7 @@ async def get_info_from_response(s, page):
             #     file.write(response.content)
             if i==0:
                 d.append(
-                    {
+                    {   
                         'original_url':art_url,
                         'title': title,
                         'date_pub': date_pub,
@@ -58,7 +59,8 @@ async def get_info_from_response(s, page):
                 )
             else:
                 d.append(
-                    {
+                    {   
+                        
                         'original_url':art_url,
                         'title': title,
                         'date_pub': date_pub,
@@ -91,7 +93,7 @@ async def get_tasks(url=''):
         await asyncio.gather(*tasks)
     
     with open('artile_info_async.json','w') as file:
-        json.dump(d, file, indent = 4, ensure_ascii=False)
+        json.dump(d, file, indent = 4, ensure_ascii=False, default=str)
         
     
     
