@@ -22,8 +22,7 @@ async def send_news(user_id):
     while (1):
         articles = get_fresh_news('https://dota2.ru/news/')
         await asyncio.sleep(randrange(30, 60))
-        for article in articles:
-            art_id = list(article.keys())
+        for art_id in articles.keys():
 
             out_to_user = ''
             out_to_user = f"_Новость от {article[art_id]['date_pub']}_\n\n*{article[art_id]['title']}\n\n*{article[art_id]['text']}{'-'*25}\n\n"

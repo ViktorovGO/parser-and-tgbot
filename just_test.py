@@ -1,6 +1,9 @@
 import json
 
-with open('artile_info.json', 'r') as f:
-            article = json.load(f)
-articles = list(article)[:5]
-print(articles)
+from botttt import get_fresh_news
+
+articles = get_fresh_news('https://dota2.ru/news/')
+
+if articles!={}:
+    for key in articles.keys():
+        print(articles[key])
