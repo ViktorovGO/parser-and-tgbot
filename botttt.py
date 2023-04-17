@@ -1,5 +1,6 @@
 # импорт функции для поддержки работоспособности
 # from background import keep_alive
+from decouple import config
 from threading import Thread
 from parser_1 import get_info, get_fresh_news
 from random import randrange
@@ -10,7 +11,7 @@ from aiogram.dispatcher.filters import Text
 import pip
 import asyncio
 pip.main(['install', 'aiogram'])
-API_TOKEN = "5443440955:AAHSLQkvlMVbNOLXxXIAsiaaIqBn4lj8PG4"
+API_TOKEN = config('API_TOKEN')
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
